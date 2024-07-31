@@ -24,7 +24,7 @@ function Employeedata() {
         } else {
             const combinedData = `Name: ${newName},Email: ${newEmail}, Description: ${newPhone}, Joining Date: ${newJoiningdate}, Status: ${newStatus}`;
             console.log(combinedData);
-            setSuccessMessage("Task added successfully");
+            setSuccessMessage("Employee added successfully");
             setTimeout(() => {
                 setSuccessMessage("");
             }, 1000);

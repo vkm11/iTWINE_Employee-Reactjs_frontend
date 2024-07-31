@@ -86,6 +86,7 @@ function Employeetask() {
 // Function to toggle the editable state for a specific row 
 const toggleEditable = (id) => {
     const rowData = todoList.find((data) => data._id === id);
+    
     if (rowData) {
         setEditableId(id);
         setEditedStartdate(rowData.startdate);
@@ -93,7 +94,8 @@ const toggleEditable = (id) => {
         setEditedTask(rowData.task);
         setEditedStatus(rowData.status);
         setEditedDeadline(rowData.deadline);
-        setEditedPhoto(rowData.Photo);
+        setEditedPhoto(rowData.photo);
+       
     } else {
         setEditableId(null);
         setEditedStartdate("");
@@ -122,19 +124,20 @@ const addTask = (e) => {
             console.log(res);
             setTodoList(prevTodoList => [res.data, ...prevTodoList]);
             // setTodoList(prevTodoList => [...prevTodoList, res.data]);
-            // window.location.reload();
+            window.location.reload();
 
             // Show success message for 1 second
-            setSuccessMessage("Task added successfully");
-            setTimeout(() => {
-                setSuccessMessage("");
-            }, 1000);
             setNewName('');
             setNewTask('');
             setNewStartdate('');
             setNewStatus('');
             setNewDeadline('');
             setNewPhoto('');
+            setSuccessMessage("Task added successfully");
+            setTimeout(() => {
+                setSuccessMessage("");
+            }, 1000);
+          
         })
         .catch(err => console.log(err));
 }
@@ -157,6 +160,9 @@ const saveEditedTask = (id) => {
             setErrorMessage("");
         }, 1000);
         return;
+    }
+    else{
+        setNewPhoto('');
     }
     axios.post('http://localhost:3001/updateTodoList/' + id, editedData)
         .then(result => {
@@ -202,6 +208,7 @@ function formatDateForDisplay(dateString) {
 }
 
 
+
 return (
     <Layout>
         <div className="container-fluid my-0 py-2">
@@ -227,20 +234,33 @@ return (
                                     {currentItems.map((data, index) => (
                                         <tr key={data._id}>
                                             <td>{(currentPage - 1) * itemsPerPage + index + 1}</td>
-                                            <td className="text-center">
+                                            {/* <td className="text-center">
                                                 {editableId === data._id ? (
                                                     <input
                                                         type="file"
                                                         accept=".png, .jpg, .jpeg"
                                                         name="photo"
                                                         value={editedPhoto}
-                                                        onChange={(e) => setEditedPhoto(e.target.files[0].name)}
+                                                        onChange={(e) => setEditedPhoto(e.target.files[0].name)} 
+                                                       
                                                     />
                                                 ) : (
                                                     <span>{data.photo && <img src={`./images/${data.photo}`} alt='' style={profileImg} />}</span>
-                                                    //  <img src="./images/candy2.png" alt=""/>
+                                                )}
+                                            </td> */}
+                                            <td className="text-center">
+                                                {editableId === data._id ? (
+                                                    <input
+                                                        type="file"
+                                                        accept=".png, .jpg, .jpeg"
+                                                        name="photo"
+                                                        onChange={(e) => setEditedPhoto(e.target.files[0].name)}
+                                                    />
+                                                ) : (
+                                                    data.photo && <img src={`./images/${data.photo}`} alt='' style={profileImg} />
                                                 )}
                                             </td>
+                                            
                                             <td>
                                                 {editableId === data._id ? (
                                                     <input
